@@ -2,7 +2,9 @@ export default class Slide {
   container: Element;
   slides: Element[];
   controls: Element;
-  time: number = 5000;
+  time: number;
+  index: number;
+  slide: Element;
   constructor(
     container: Element,
     slides: Element[],
@@ -14,15 +16,18 @@ export default class Slide {
     this.controls = controls;
     this.time = time;
 
-    console.log(this.container);
-    console.log(this.slides);
-    console.log(this.controls);
-    console.log(this.time);
+    this.index = 0;
+    this.slide = this.slides[this.index];
 
-    this.show(0);
+    this.show(this.index);
+  }
+  hide(el: Element) {
+    el.classList.remove("active");
   }
   show(index: number) {
-    this.slides.forEach((el) => el.classList.remove("active"));
-    this.slides[index].classList.add("active");
+    this.index = index;
+    this.slide = this.slides[this.index];
+    this.slides.forEach((el) => this.hide(el));
+    this.slide.classList.add("active");
   }
 }
