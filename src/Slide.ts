@@ -41,7 +41,8 @@ export default class Slide {
     const nextButton = document.createElement('button');
     this.controls.appendChild(prevButton)
     this.controls.appendChild(nextButton)
-
+    prevButton.innerText = 'Slide Anterior'
+    nextButton.innerText = 'Próximo Slide'
     prevButton.addEventListener('pointerup', () => this.prev())
     nextButton.addEventListener('pointerup', () => this.next())
   }
