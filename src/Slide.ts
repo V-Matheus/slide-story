@@ -48,10 +48,10 @@ export default class Slide {
     this.slide = this.slides[this.index];
     localStorage.setItem('activeSlide', String(this.index));
 
-    if(this.thumbItems) {
-      this.thumb = this.thumbItems[this.index]
-      this.thumbItems.forEach(el => el.classList.remove('active'))
-      this.thumb.classList.add('active')
+    if (this.thumbItems) {
+      this.thumb = this.thumbItems[this.index];
+      this.thumbItems.forEach((el) => el.classList.remove('active'));
+      this.thumb.classList.add('active');
     }
 
     this.slides.forEach((el) => this.hide(el));
@@ -74,7 +74,7 @@ export default class Slide {
   auto(time: number) {
     this.timeout?.clear();
     this.timeout = new Timeout(() => this.next(), time);
-    if(this.thumb) this.thumb.style.animationDuration = `${time}ms`
+    if (this.thumb) this.thumb.style.animationDuration = `${time}ms`;
   }
   prev() {
     if (this.paused) return;
@@ -87,19 +87,21 @@ export default class Slide {
     this.show(next);
   }
   pause() {
+    document.body.classList.add('paused');
     this.pausedTimeout = new Timeout(() => {
       this.timeout?.pause();
       this.paused = true;
-      this.thumb?.classList.add('paused')
+      this.thumb?.classList.add('paused');
       if (this.slide instanceof HTMLVideoElement) this.slide.pause();
     }, 300);
   }
   continue() {
+    document.body.classList.remove('paused');
     this.pausedTimeout?.clear();
     if (this.paused) {
       this.paused = false;
       this.timeout?.continue();
-      this.thumb?.classList.remove('paused')
+      this.thumb?.classList.remove('paused');
       if (this.slide instanceof HTMLVideoElement) this.slide.play();
     }
   }
@@ -110,10 +112,9 @@ export default class Slide {
     this.controls.appendChild(nextButton);
 
     this.controls.addEventListener('pointerdown', () => this.pause());
-    this.controls.addEventListener('pointerup', () => this.continue());
+    document.addEventListener('pointerup', () => this.continue());
+    document.addEventListener('touchend', () => this.continue());
 
-    prevButton.innerText = 'Slide Anterior';
-    nextButton.innerText = 'Próximo Slide';
     prevButton.addEventListener('pointerup', () => this.prev());
     nextButton.addEventListener('pointerup', () => this.next());
   }
