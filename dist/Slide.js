@@ -16,7 +16,9 @@ export default class Slide {
         this.time = time;
         this.timeout = null;
         this.pausedTimeout = null;
-        this.index = localStorage.getItem('activeSlide') ? Number(localStorage.getItem('activeSlide')) : 0;
+        this.index = localStorage.getItem('activeSlide')
+            ? Number(localStorage.getItem('activeSlide'))
+            : 0;
         this.slide = this.slides[this.index];
         this.paused = false;
         this.init();
@@ -96,8 +98,17 @@ export default class Slide {
         prevButton.addEventListener('pointerup', () => this.prev());
         nextButton.addEventListener('pointerup', () => this.next());
     }
+    addThumbItems() {
+        const thumbContainer = document.createElement('div');
+        thumbContainer.id = 'slide-thumb';
+        for (let i = 0; i < this.slides.length; i++) {
+            thumbContainer.innerHTML += `<span><span class="thumb-item"></span></span>`;
+        }
+        this.controls.appendChild(thumbContainer);
+    }
     init() {
         this.addControls();
+        this.addThumbItems();
         this.show(this.index);
     }
 }

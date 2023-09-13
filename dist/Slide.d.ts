@@ -19,5 +19,6 @@ export default class Slide {
     pause(): void;
     continue(): void;
     private addControls;
+    private addThumbItems;
     private init;
 }
