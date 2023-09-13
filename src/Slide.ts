@@ -23,7 +23,7 @@ export default class Slide {
 
     this.timeout = null;
     this.pausedTimeout = null;
-    this.index = 0;
+    this.index = localStorage.getItem('activeSlide') ? Number(localStorage.getItem('activeSlide')) : 0;
     this.slide = this.slides[this.index];
     this.paused = false;
 
@@ -39,6 +39,8 @@ export default class Slide {
   show(index: number) {
     this.index = index;
     this.slide = this.slides[this.index];
+    localStorage.setItem('activeSlide', String(this.index));
+
     this.slides.forEach((el) => this.hide(el));
     this.slide.classList.add('active');
     if (this.slide instanceof HTMLVideoElement) {
@@ -50,11 +52,11 @@ export default class Slide {
   autoVideo(video: HTMLVideoElement) {
     video.muted = true;
     video.play();
-    let firstPlay = true
+    let firstPlay = true;
     video.addEventListener('playing', () => {
-     if(firstPlay) this.auto(video.duration * 1000);
-     firstPlay = false;
-    })
+      if (firstPlay) this.auto(video.duration * 1000);
+      firstPlay = false;
+    });
   }
   auto(time: number) {
     this.timeout?.clear();
