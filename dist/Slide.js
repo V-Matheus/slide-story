@@ -48,16 +48,17 @@ export default class Slide {
         this.show(next);
     }
     pause() {
-        console.log('pause');
         this.pausedTimeout = new Timeout(() => {
+            this.timeout?.pause();
             this.paused = true;
         }, 300);
     }
     continue() {
-        console.log('continue');
         this.pausedTimeout?.clear();
-        this.paused = false;
-        this.auto(this.time);
+        if (this.paused) {
+            this.paused = false;
+            this.timeout?.continue();
+        }
     }
     addControls() {
         const prevButton = document.createElement('button');
